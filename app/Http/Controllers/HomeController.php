@@ -109,7 +109,7 @@ class HomeController extends Controller
         $this->isLimitAdditional();  
 
         $pay = Pay::where('payment_type', 'second')->where('invoice', $dataParams['invoice'])->first();
-
+        
         if(!$pay)
         {
           $pay = new Pay;
@@ -125,6 +125,7 @@ class HomeController extends Controller
 
         return true;
     }
+
     public function processPayRequest(Request $request) {
         // тестовый запрос 
         $client = new Client();
@@ -148,10 +149,8 @@ class HomeController extends Controller
     
     public function processPayRequestAdditional(Request $request) {
         // тестовый запрос
-        $client = new Client();
 
-        $response = $client->post('http://app.loc/callback-url', [
-            RequestOptions::JSON => [
+        $response = Http::post('http://app.loc/callback-url', [
             "Headers" => [
                 "Authorization" => 'd84eb9036bfc2fa7f46727f101c73c73',
             ],
@@ -163,12 +162,10 @@ class HomeController extends Controller
                 "amount_paid" => 700,
                 "rand" => "SNuHufEJ",
             ]
-          ]
         ]);
-
-        if ($response->getBody()) {
-            echo $response->getBody();
-        }
+        
+        echo $response;
+        
     }  
     
 }
