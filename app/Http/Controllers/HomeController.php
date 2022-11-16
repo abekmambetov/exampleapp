@@ -51,7 +51,7 @@ class HomeController extends Controller
         }
     }
 
-    private function isLimitAdditional() {
+    private function isLimitTodayAdditional() {
         $countPaysToday = Pay::whereDate('created_at', Carbon::today())->where('payment_type', 'second')->count();
         if($countPaysToday){
             if($countPaysToday >= $this->limitPerDayAdditional)
@@ -106,10 +106,10 @@ class HomeController extends Controller
         if($md5_hash !== $request->Headers['Authorization'])
             return false;
 
-        $this->isLimitAdditional();  
+        $this->isLimitTodayAdditional();  
 
         $pay = Pay::where('payment_type', 'second')->where('invoice', $dataParams['invoice'])->first();
-        
+
         if(!$pay)
         {
           $pay = new Pay;
